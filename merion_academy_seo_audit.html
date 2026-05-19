@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO-аудит — Merion Academy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface-2: #f2f1ee;
+    --border: #e5e3df;
+    --text: #1a1917;
+    --text-2: #6b6963;
+    --text-3: #9b988f;
+    --critical: #dc2626;
+    --critical-bg: #fef2f2;
+    --critical-border: #fecaca;
+    --high: #ea580c;
+    --high-bg: #fff7ed;
+    --high-border: #fed7aa;
+    --medium: #ca8a04;
+    --medium-bg: #fefce8;
+    --medium-border: #fef08a;
+    --accent: #2563eb;
+    --accent-bg: #eff6ff;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Sora', sans-serif;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 2px 8px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─────────────────────────────────── */
+  .header {
+    background: var(--text);
+    color: white;
+    padding: 40px 40px 32px;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .header-url {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    font-family: var(--mono);
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: var(--mono);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-number.critical { color: #f87171; }
+  .stat-number.high { color: #fb923c; }
+  .stat-number.medium { color: #fbbf24; }
+  .stat-number.total { color: white; }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── MAIN LAYOUT ─────────────────────────────── */
+  .main { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ─── SECTION HEADERS ─────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 48px;
+  }
+  .section-header:first-child { margin-top: 0; }
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  h2.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  /* ─── EXEC SUMMARY ────────────────────────────── */
+  .exec-box {
+    background: var(--accent-bg);
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 0;
+  }
+  .exec-box p {
+    color: #1e40af;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .exec-box p:last-child { margin-bottom: 0; }
+  .top5-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3b82f6;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .top5-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .top5-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #1e40af;
+  }
+  .top5-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    background: #2563eb;
+    color: white;
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─── ISSUE CARDS ─────────────────────────────── */
+  .issues-group { display: flex; flex-direction: column; gap: 16px; }
+
+  .issue-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 4px 1fr;
+  }
+  .issue-stripe { }
+  .issue-stripe.critical { background: var(--critical); }
+  .issue-stripe.high { background: var(--high); }
+  .issue-stripe.medium { background: var(--medium); }
+
+  .issue-body { padding: 20px 24px; }
+  .issue-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .issue-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .issue-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .issue-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .sev-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .sev-badge.critical { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical-border); }
+  .sev-badge.high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+  .sev-badge.medium { background: var(--medium-bg); color: var(--medium); border: 1px solid var(--medium-border); }
+
+  .issue-section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  .issue-section-label:first-of-type { margin-top: 0; }
+  .issue-text {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+  .code-block {
+    background: #1a1917;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: #e5e3df;
+    overflow-x: auto;
+    margin-top: 4px;
+  }
+  .code-block .comment { color: #6b7280; }
+  .code-block .bad { color: #f87171; }
+  .code-block .good { color: #6ee7b7; }
+  .code-block .neutral { color: #fcd34d; }
+
+  .fix-box {
+    background: var(--green-bg);
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 4px;
+  }
+  .fix-box .fix-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #16a34a;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .fix-box p, .fix-box li {
+    font-size: 13px;
+    color: #14532d;
+    line-height: 1.6;
+  }
+  .fix-box ul { padding-left: 16px; }
+  .fix-box li { margin-bottom: 3px; }
+
+  .scope-pill {
+    display: inline-block;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #2563eb;
+    font-family: var(--mono);
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ─── ACTION PLAN ─────────────────────────────── */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+  .sprint-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .sprint-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sprint-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 3px;
+  }
+  .sprint-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .sprint-meta {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .sprint-tasks { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .task-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px;
+  }
+  .task-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .task-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    font-weight: 600;
+  }
+  .task-scope {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+  .task-desc {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ─── MANUAL CHECKS ────────────────────────────── */
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .check-link {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 2px;
+    word-break: break-all;
+  }
+
+  /* ─── SEVERITY LEGEND ─────────────────────────── */
+  .legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot.critical { background: var(--critical); }
+  .legend-dot.high { background: var(--high); }
+  .legend-dot.medium { background: var(--medium); }
+
+  /* ─── RESPONSIVE ────────────────────────────── */
+  @media (max-width: 768px) {
+    .header { padding: 28px 20px 24px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .kanban { grid-template-columns: 1fr 1fr; }
+    .checklist { grid-template-columns: 1fr; }
+    .main { padding: 28px 16px 60px; }
+  }
+  @media (max-width: 480px) {
+    .kanban { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .header-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-label">SEO-аудит · Отчёт</div>
+      <div class="header-title">Merion Academy</div>
+      <div class="header-url">wiki.merionet.ru/merion-academy + /course/* (47 страниц)</div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-pill">Май 2026</div>
+      <div class="meta-pill">Рынок RU</div>
+      <div class="meta-pill">Laravel / PHP</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number total">47</div>
+      <div class="stat-label">Страниц проверено</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number critical">3</div>
+      <div class="stat-label">Критических проблем</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number high">5</div>
+      <div class="stat-label">Важных проблем</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number medium">4</div>
+      <div class="stat-label">Средних проблем</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <!-- EXEC SUMMARY -->
+  <div class="section-header" style="margin-top:32px;">
+    <div class="section-tag">Резюме</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="exec-box">
+    <p>Все 47 страниц академии имеют два дефекта на уровне шаблона, которые активно подавляют позиции: весь сайт объявляет <code style="font-family:var(--mono);font-size:12px;">lang="en"</code>, хотя таргетирует русскоязычных пользователей, а каждая страница курса отдаёт заголовок CTA-виджета (<em>«Сомневаетесь в выборе?»</em>) как единственный H1 — само название курса размечено дивом. Оба дефекта исправляются одним изменением шаблона и дают немедленный эффект.</p>
+    <p>Метаданные контента (title, description) непоследовательны и бедны ключевыми словами: в большинстве заголовков нет слов «курс» и «онлайн», а описания не содержат инструментов, длительности и социальных доказательств — именно того, что определяет CTR в выдаче по курсам. Структурированные данные отсутствуют на всех 46 страницах курсов.</p>
+    <div class="top5-label">5 приоритетных исправлений</div>
+    <ul class="top5-list">
+      <li><span class="top5-num">1</span>Заменить <code style="font-family:var(--mono);font-size:12px;">lang="en"</code> → <code style="font-family:var(--mono);font-size:12px;">lang="ru"</code> в базовом шаблоне (все 47 страниц)</li>
+      <li><span class="top5-num">2</span>Повысить div с названием курса до &lt;h1&gt; в шаблоне курса (все 46 страниц)</li>
+      <li><span class="top5-num">3</span>Понизить CTA &lt;h1&gt; → &lt;h2&gt;, чтобы на странице был только один H1 (все 46 страниц)</li>
+      <li><span class="top5-num">4</span>Переписать все 46 тегов &lt;title&gt; по формуле: «[Тема]: онлайн курс [уровень] | Merion Academy»</li>
+      <li><span class="top5-num">5</span>Добавить схему Course JSON-LD в шаблон курса (все 46 страниц)</li>
+    </ul>
+  </div>
+
+  <!-- ══ CRITICAL ISSUES ══ -->
+  <div class="section-header">
+    <div class="section-tag" style="color:var(--critical);border-color:var(--critical-border);background:var(--critical-bg);">● Критично</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot critical"></span>Критические — исправить немедленно</span>
+  </div>
+  <div class="issues-group">
+
+    <!-- Issue 1 -->
+    <div class="issue-card">
+      <div class="issue-stripe critical"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#1</span>
+            <span class="issue-title">lang="en" на всех 47 страницах академии</span>
+          </div>
+          <span class="sev-badge critical">Критично</span>
+        </div>
+        <div class="issue-section-label">Доказательство</div>
+        <div class="code-block">
+<span class="bad">&lt;html lang="en"&gt;</span>  <span class="comment">&lt;!-- на каждой странице академии --&gt;</span>
+        </div>
+        <div class="issue-section-label" style="margin-top:14px;">Влияние</div>
+        <p class="issue-text">Страницы академии — единственные коммерческие страницы на сайте. Все они сигнализируют поисковикам, что контент на английском, хотя таргетируют рынки RU / KZ / BY / UZ / KG. Это наиболее высокоприоритетное исправление на всём сайте.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Изменить в шаблоне базового лейаута:</p>
+            <div class="code-block" style="margin-top:8px;"><span class="bad">&lt;html lang="en"&gt;</span>  →  <span class="good">&lt;html lang="ru"&gt;</span></div>
+            <p style="margin-top:8px;">Одно изменение шаблона. <strong>Затрагивает все 47 страниц</strong> одновременно.</p>
+          </div>
+        </div>
+        <span class="scope-pill">Все 47 страниц</span><span class="scope-pill">1 изменение шаблона</span>
+      </div>
+    </div>
+
+    <!-- Issue 2 -->
+    <div class="issue-card">
+      <div class="issue-stripe critical"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#2</span>
+            <span class="issue-title">Нет H1 ни на одной странице курса — название курса размечено как &lt;div&gt;</span>
+          </div>
+          <span class="sev-badge critical">Критично</span>
+        </div>
+        <div class="issue-section-label">Доказательство — шаблон страницы курса</div>
+        <div class="code-block">
+<span class="comment">&lt;!-- Весь контент — дивы, не заголовки: --&gt;</span>
+<span class="bad">&lt;div class="courseIntro-title _h2"&gt;Стань инженером Devops с нуля&lt;/div&gt;</span>
+<span class="bad">&lt;div class="section__title _h2"&gt;о курсе от автора&lt;/div&gt;</span>
+<span class="bad">&lt;div class="section__title _h2"&gt;Кому подойдет курс?&lt;/div&gt;</span>
+<span class="bad">&lt;div class="section__title _h2"&gt;Программа курса&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Единственный настоящий H1 на каждой странице курса: --&gt;</span>
+<span class="neutral">&lt;h1 class="somnevaetes__form-head-title"&gt;Сомневаетесь в выборе?&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- И один H2 в конце: --&gt;</span>
+<span class="neutral">&lt;h2 class="courseReviews-title"&gt;Отзывы наших учеников&lt;/h2&gt;</span>
+        </div>
+        <div class="issue-section-label" style="margin-top:14px;">Влияние</div>
+        <p class="issue-text">Единственный H1-сигнал Google на каждой странице курса — «Сомневаетесь в выборе?» (CTA-форма). Название курса — важнейший ключевой сигнал на странице — невидимо для краулера.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <ul>
+              <li><code style="font-family:var(--mono);font-size:11px;">&lt;div class="courseIntro-title _h2"&gt;</code> → <code style="font-family:var(--mono);font-size:11px;">&lt;h1 class="courseIntro-title"&gt;</code></li>
+              <li><code style="font-family:var(--mono);font-size:11px;">&lt;div class="section__title _h2"&gt;</code> → <code style="font-family:var(--mono);font-size:11px;">&lt;h2 class="section__title"&gt;</code></li>
+              <li><code style="font-family:var(--mono);font-size:11px;">&lt;h1 class="somnevaetes__form-head-title"&gt;</code> → <code style="font-family:var(--mono);font-size:11px;">&lt;h2&gt;</code></li>
+            </ul>
+          </div>
+        </div>
+        <span class="scope-pill">Все 46 страниц курсов</span><span class="scope-pill">Шаблон курса</span>
+      </div>
+    </div>
+
+    <!-- Issue 3 -->
+    <div class="issue-card">
+      <div class="issue-stripe critical"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#3</span>
+            <span class="issue-title">Название курса в &lt;title&gt; ≠ видимый заголовок</span>
+          </div>
+          <span class="sev-badge critical">Критично</span>
+        </div>
+        <div class="issue-section-label">Доказательство (страница DevOps)</div>
+        <div class="code-block">
+<span class="bad">&lt;title&gt;DevOps-инженер с нуля&lt;/title&gt;</span>
+<span class="neutral">&lt;div class="courseIntro-title"&gt;Стань инженером Devops с нуля&lt;/div&gt;</span>
+        </div>
+        <div class="issue-section-label" style="margin-top:14px;">Влияние</div>
+        <p class="issue-text">Разный порядок слов, разная капитализация (DevOps vs Devops), разный поисковый интент. Google согласовывает это, но смешанные сигналы снижают уверенность в целевом ключевом слове страницы.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Привести &lt;title&gt;, &lt;h1&gt; и og:title к одной строке. Формат &lt;title&gt; лучше для SEO (роль первой), стандартизировать H1 под него.</p>
+          </div>
+        </div>
+        <span class="scope-pill">46 страниц</span>
+      </div>
+    </div>
+
+  </div><!-- /critical group -->
+
+  <!-- ══ HIGH ISSUES ══ -->
+  <div class="section-header">
+    <div class="section-tag" style="color:var(--high);border-color:var(--high-border);background:var(--high-bg);">● Важно</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="issues-group">
+
+    <!-- Issue 4 -->
+    <div class="issue-card">
+      <div class="issue-stripe high"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#4</span>
+            <span class="issue-title">Страница /merion-academy отсутствует в sitemap</span>
+          </div>
+          <span class="sev-badge high">Высокий/span>
+        </div>
+        <div class="issue-section-label">Доказательство</div>
+        <p class="issue-text">46 дочерних страниц курсов есть в sitemap. Родительская страница — основной коммерческий лендинг — отсутствует. Краулеры находят её через внутренние ссылки, но приоритетного сигнала через sitemap нет.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Добавить в sitemap.xml с <code style="font-family:var(--mono);font-size:11px;">priority="0.9"</code></p>
+          </div>
+        </div>
+        <span class="scope-pill">1 страница</span>
+      </div>
+    </div>
+
+    <!-- Issue 5 -->
+    <div class="issue-card">
+      <div class="issue-stripe high"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#5</span>
+            <span class="issue-title">Title теги: непоследовательный формат, мало ключевых слов</span>
+          </div>
+          <span class="sev-badge high">Высокий/span>
+        </div>
+        <div class="issue-section-label">Текущее состояние</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:4px;">
+            <thead>
+              <tr style="background:var(--surface-2);border-bottom:1px solid var(--border);">
+                <th style="text-align:left;padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:600;letter-spacing:.08em;">Курс</th>
+                <th style="text-align:left;padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:600;letter-spacing:.08em;">Текущий title</th>
+                <th style="text-align:left;padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:600;letter-spacing:.08em;">Проблема</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 10px;color:var(--text);">DevOps</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">DevOps-инженер с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">нет «курс», нет «онлайн»</td></tr>
+              <tr style="border-bottom:1px solid var(--border);background:var(--surface-2);"><td style="padding:7px 10px;color:var(--text);">Python</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Python программист с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">нет «курс»</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 10px;color:var(--text);">Кибербезопасность</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Онлайн-курс по кибербезопасности</td><td style="padding:7px 10px;color:var(--green);font-size:11px;">✅ Хороший формат</td></tr>
+              <tr style="border-bottom:1px solid var(--border);background:var(--surface-2);"><td style="padding:7px 10px;color:var(--text);">Linux</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Онлайн-курс по Linux</td><td style="padding:7px 10px;color:var(--green);font-size:11px;">✅ Хороший формат</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 10px;color:var(--text);">Frontend</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Фронтенд-разработчик с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">нет «курс»</td></tr>
+              <tr style="border-bottom:1px solid var(--border);background:var(--surface-2);"><td style="padding:7px 10px;color:var(--text);">Java</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Java-разработчик с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">нет «курс»</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 10px;color:var(--text);">Data Science</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Data Science с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">Очень слабый</td></tr>
+              <tr><td style="padding:7px 10px;color:var(--text);">QA</td><td style="padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--text-2);">Тестировщик ПО: основы QA с нуля</td><td style="padding:7px 10px;color:var(--critical);font-size:11px;">нет «курс»</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Рекомендуемая формула</div>
+            <div class="code-block" style="margin-top:6px;margin-bottom:8px;">[Тема]: онлайн курс [уровень] | Merion Academy</div>
+            <p><strong>Примеры:</strong></p>
+            <ul style="margin-top:4px;">
+              <li>DevOps-инженер с нуля: онлайн курс | Merion Academy</li>
+              <li>Python-программист с нуля: онлайн курс | Merion Academy</li>
+              <li>Фронтенд-разработчик: онлайн курс с нуля | Merion Academy</li>
+              <li>Data Science с нуля: онлайн курс | Merion Academy</li>
+            </ul>
+            <p style="margin-top:6px;">Держать до 60 символов. Шаблон — страницы кибербезопасности и Linux.</p>
+          </div>
+        </div>
+        <span class="scope-pill">46 страниц</span>
+      </div>
+    </div>
+
+    <!-- Issue 6 -->
+    <div class="issue-card">
+      <div class="issue-stripe high"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#6</span>
+            <span class="issue-title">Мета-описания: переменное качество, нет ключевых данных</span>
+          </div>
+          <span class="sev-badge high">Высокий/span>
+        </div>
+        <div class="issue-section-label">Текущее состояние</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <div style="background:var(--critical-bg);border:1px solid var(--critical-border);border-radius:6px;padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--critical);font-weight:600;margin-bottom:4px;">DevOps — СЛАБЫЙ</div>
+            <p style="font-size:12px;color:var(--text-2);font-style:italic;">«Стань DevOps-инженером с нуля и научись использовать инструменты и методы DevOps»</p>
+            <p style="font-size:11px;color:var(--critical);margin-top:4px;">Круговой, расплывчатый</p>
+          </div>
+          <div style="background:var(--critical-bg);border:1px solid var(--critical-border);border-radius:6px;padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--critical);font-weight:600;margin-bottom:4px;">Python — СЛАБЫЙ</div>
+            <p style="font-size:12px;color:var(--text-2);font-style:italic;">«Стань разработчиком на одном из самых популярных языков программирования - Python»</p>
+            <p style="font-size:11px;color:var(--critical);margin-top:4px;">Расплывчатый</p>
+          </div>
+          <div style="background:var(--green-bg);border:1px solid #bbf7d0;border-radius:6px;padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:600;margin-bottom:4px;">Data Analyst — ЛУЧШИЙ ПРИМЕР ✅</div>
+            <p style="font-size:12px;color:var(--text-2);font-style:italic;">«Научись аналитике данных и освой ключевые навыки: работу с SQL, Python, Excel и Power BI...»</p>
+            <p style="font-size:11px;color:var(--green);margin-top:4px;">Называет инструменты — используй как шаблон</p>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Рекомендуемая формула</div>
+            <div class="code-block" style="margin-top:6px;margin-bottom:8px;">[Результат] за [срок]. Изучишь: [инструмент 1], [инструмент 2], [инструмент 3]. [Соц. доказательство]. [CTA].</div>
+            <p><strong>Пример для DevOps:</strong></p>
+            <div class="code-block" style="margin-top:6px;">Станешь DevOps-инженером за 6 месяцев. Изучишь: Docker, Kubernetes, CI/CD, Terraform, Linux. 6000+ выпускников. Пробный урок бесплатно.</div>
+          </div>
+        </div>
+        <span class="scope-pill">46 страниц</span>
+      </div>
+    </div>
+
+    <!-- Issue 7 -->
+    <div class="issue-card">
+      <div class="issue-stripe high"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#7</span>
+            <span class="issue-title">Нет структурированных данных Course (JSON-LD)</span>
+          </div>
+          <span class="sev-badge high">Высокий/span>
+        </div>
+        <div class="issue-section-label">Доказательство</div>
+        <p class="issue-text">Ноль JSON-LD на любой странице курса. Google поддерживает схемы Course и CourseInstance для онлайн-образования — может отображать детали курса (провайдер, цена, длительность) в расширенных результатах.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление — добавить JSON-LD к шаблону курса</div>
+            <div class="code-block" style="margin-top:8px;">{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "DevOps-инженер с нуля",
+  "description": "Станешь DevOps-инженером за 6 месяцев...",
+  "provider": {
+    "@type": "Organization",
+    "name": "Merion Academy",
+    "sameAs": "https://wiki.merionet.ru/merion-academy"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "online",
+    "inLanguage": "ru"
+  }
+}</div>
+            <p style="margin-top:8px;">Заполнять динамически из базы данных. Одно изменение шаблона → 46 страниц получают схему.</p>
+          </div>
+        </div>
+        <span class="scope-pill">46 страниц</span><span class="scope-pill">1 изменение шаблона</span>
+      </div>
+    </div>
+
+    <!-- Issue 8 -->
+    <div class="issue-card">
+      <div class="issue-stripe high"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#8</span>
+            <span class="issue-title">Слабые title и описание главной страницы /merion-academy</span>
+          </div>
+          <span class="sev-badge high">Высокий/span>
+        </div>
+        <div class="issue-section-label">Текущее состояние</div>
+        <div class="code-block">
+<span class="comment">// Title:</span>
+<span class="bad">"Merion Academy - платформа доступного IT образования"</span>
+
+<span class="comment">// Meta description:</span>
+<span class="bad">"Востребованные и высокооплачиваемые знания ИТ-отрасли от практикующих
+экспертов в России и мире. Курсы и образовательные материалы"</span>
+        </div>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <div class="code-block" style="margin-top:6px;">
+<span class="comment">// Новый title:</span>
+<span class="good">"Merion Academy — онлайн курсы по IT: DevOps, Python, сети, кибербезопасность"</span>
+
+<span class="comment">// Новое описание:</span>
+<span class="good">"Онлайн IT-курсы от практикующих экспертов. 6000+ выпускников.
+DevOps, Python, сети, QA, кибербезопасность — с нуля до junior/middle.
+Пробный урок бесплатно."</span>
+            </div>
+          </div>
+        </div>
+        <span class="scope-pill">1 страница</span>
+      </div>
+    </div>
+
+  </div><!-- /high group -->
+
+  <!-- ══ MEDIUM ISSUES ══ -->
+  <div class="section-header">
+    <div class="section-tag" style="color:var(--medium);border-color:var(--medium-border);background:var(--medium-bg);">● Средне</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="issues-group">
+
+    <!-- Issue 9 -->
+    <div class="issue-card">
+      <div class="issue-stripe medium"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#9</span>
+            <span class="issue-title">Нет хлебных крошек на страницах курсов</span>
+          </div>
+          <span class="sev-badge medium">Средний/span>
+        </div>
+        <p class="issue-text">Страницы статей показывают хлебные крошки типа «VoIP › Как настроить»; страницы курсов — ничего. Хлебные крошки в SERP (через схему) увеличивают кликабельный размер и помогают пользователям понять место страницы в иерархии.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Добавить UI хлебных крошек + BreadcrumbList JSON-LD: <code style="font-family:var(--mono);font-size:11px;">Merion Academy → [Категория] → [Название курса]</code></p>
+          </div>
+        </div>
+        <span class="scope-pill">46 страниц</span>
+      </div>
+    </div>
+
+    <!-- Issue 10 -->
+    <div class="issue-card">
+      <div class="issue-stripe medium"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#10</span>
+            <span class="issue-title">Имена инструкторов есть на странице, но нет в мета или схеме</span>
+          </div>
+          <span class="sev-badge medium">Средний/span>
+        </div>
+        <p class="issue-text">Страницы курсов показывают имена инструкторов (например, «Филипп Игнатенко» в DevOps). Это актив E-E-A-T. Но нет тега author в мета, нет ссылки на страницу профиля, нет схемы Person, связывающей инструктора с контентом.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Добавить <code style="font-family:var(--mono);font-size:11px;">&lt;meta name="author" content="Филипп Игнатенко"&gt;</code>, создать страницы профилей <code style="font-family:var(--mono);font-size:11px;">/authors/[имя]</code> и добавить поле instructor в схему Course.</p>
+          </div>
+        </div>
+        <span class="scope-pill">На инструктора</span>
+      </div>
+    </div>
+
+    <!-- Issue 11 -->
+    <div class="issue-card">
+      <div class="issue-stripe medium"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#11</span>
+            <span class="issue-title">Нет тегов hreflang</span>
+          </div>
+          <span class="sev-badge medium">Средний/span>
+        </div>
+        <p class="issue-text">Ни один тег hreflang не найден ни на одной странице. Поскольку контент ориентирован на несколько русскоязычных рынков (RU, KZ, BY, UZ, KG), самоссылающиеся теги hreflang="ru" укрепляют языковой таргетинг.</p>
+        <div style="margin-top:12px;">
+          <div class="fix-box">
+            <div class="fix-label">Исправление</div>
+            <p>Добавить самоссылающиеся теги <code style="font-family:var(--mono);font-size:11px;">hreflang="ru"</code> на все 47 страниц.</p>
+          </div>
+        </div>
+        <span class="scope-pill">47 страниц</span>
+      </div>
+    </div>
+
+    <!-- Issue 12 -->
+    <div class="issue-card">
+      <div class="issue-stripe medium"></div>
+      <div class="issue-body">
+        <div class="issue-top">
+          <div class="issue-title-row">
+            <span class="issue-num">#12</span>
+            <span class="issue-title">og:type="website" на всех страницах курсов</span>
+          </div>
+          <span class="sev-badge medium">Средний/span>
+        </div>
+        <p class="issue-text">Не прямой фактор ранжирования. Основной промах: og:description идентичен слабому тексту мета-описания. Обновление описаний (из задачи #6) автоматически улучшит og:description при условии синхронизации тегов.</p>
+        <span class="scope-pill">46 страниц</span>
+      </div>
+    </div>
+
+  </div><!-- /medium group -->
+
+  <!-- ══ ACTION PLAN ══ -->
+  <div class="section-header">
+    <div class="section-tag">План действий</div>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title" style="margin-bottom:20px;">Приоритизированный план действий</h2>
+
+  <div class="kanban">
+
+    <!-- Sprint 1 -->
+    <div class="sprint-col">
+      <div class="sprint-header">
+        <div class="sprint-label">Спринт 1</div>
+        <div class="sprint-title">День 1</div>
+        <div class="sprint-meta">Разработчик · 2–4 часа · Изменения шаблона</div>
+      </div>
+      <div class="sprint-tasks">
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#1</span><span class="task-scope">47 страниц</span></div>
+          <div class="task-desc">Изменить lang="en" → lang="ru" в базовом лейауте</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#2</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">courseIntro-title div → &lt;h1&gt; в шаблоне курса</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#3</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">section__title дивы → &lt;h2&gt; в шаблоне курса</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#4</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">CTA &lt;h1&gt; → &lt;h2&gt; в шаблоне виджета</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#5</span><span class="task-scope">1 страница</span></div>
+          <div class="task-desc">Добавить /merion-academy в sitemap.xml с priority="0.9"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprint 2 -->
+    <div class="sprint-col">
+      <div class="sprint-header">
+        <div class="sprint-label">Спринт 2</div>
+        <div class="sprint-title">Неделя 1</div>
+        <div class="sprint-meta">Копирайтер · ~1 день</div>
+      </div>
+      <div class="sprint-tasks">
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#6</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Переписать все 46 &lt;title&gt; по формуле: [Тема]: онлайн курс [уровень] | Merion Academy</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#7</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Привести текст H1 в соответствие с title тегом</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#8</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Переписать мета-описания: инструменты + длительность + соц. доказательства</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#9</span><span class="task-scope">1 страница</span></div>
+          <div class="task-desc">Исправить title и мета-описание главной /merion-academy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprint 3 -->
+    <div class="sprint-col">
+      <div class="sprint-header">
+        <div class="sprint-label">Спринт 3</div>
+        <div class="sprint-title">Неделя 2</div>
+        <div class="sprint-meta">Разработчик · ~1 день · Структурированные данные</div>
+      </div>
+      <div class="sprint-tasks">
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#10</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Добавить Course JSON-LD в шаблон курса</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#11</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Добавить BreadcrumbList JSON-LD в шаблон курса</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#12</span><span class="task-scope">1 страница</span></div>
+          <div class="task-desc">Добавить ItemList JSON-LD на /merion-academy (список всех курсов)</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#13</span><span class="task-scope">1 страница</span></div>
+          <div class="task-desc">Добавить Organization JSON-LD на /merion-academy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprint 4 -->
+    <div class="sprint-col">
+      <div class="sprint-header">
+        <div class="sprint-label">Спринт 4</div>
+        <div class="sprint-title">Месяц 1</div>
+        <div class="sprint-meta">E-E-A-T и авторитет</div>
+      </div>
+      <div class="sprint-tasks">
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#14</span><span class="task-scope">На инструктора</span></div>
+          <div class="task-desc">Создать страницы профилей инструкторов (/authors/[имя])</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#15</span><span class="task-scope">46 страниц</span></div>
+          <div class="task-desc">Привязать имена инструкторов к страницам профилей</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#16</span><span class="task-scope">47 страниц</span></div>
+          <div class="task-desc">Добавить hreflang="ru" на все 47 страниц</div>
+        </div>
+        <div class="task-card">
+          <div class="task-top"><span class="task-num">#17</span><span class="task-scope">Шаблон</span></div>
+          <div class="task-desc">Добавить видимую навигацию хлебных крошек на страницы курсов</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /kanban -->
+
+  <!-- ══ MANUAL CHECKS ══ -->
+  <div class="section-header">
+    <div class="section-tag">Ручная проверка</div>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title" style="margin-bottom:16px;">Что проверить вручную</h2>
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>PageSpeed / Core Web Vitals</strong><br>
+        Запустить на /merion-academy и примере страницы курса
+        <a class="check-link" href="https://pagespeed.web.dev" target="_blank">pagespeed.web.dev</a>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Валидация схемы</strong><br>
+        Прогнать 3–4 страницы курсов через тест расширенных результатов
+        <a class="check-link" href="https://search.google.com/test/rich-results" target="_blank">search.google.com/test/rich-results</a>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Покрытие Search Console</strong><br>
+        Проверить ошибки краулинга и индексацию /merion-academy
+        <a class="check-link" href="https://search.google.com/search-console" target="_blank">search.google.com/search-console</a>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Базовые позиции по ключевым словам</strong><br>
+        Выгрузить текущие позиции для ключевых слов курсов из Search Console до начала изменений
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;gap:12px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);">SEO-аудит · wiki.merionet.ru/merion-academy · Май 2026</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);">47 страниц · 12 проблем · 17 задач в плане</div>
+  </div>
+
+</div><!-- /main -->
+</body>
+</html>
